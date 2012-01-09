@@ -63,4 +63,4 @@ There's no Linux or Windows keymappings because I don't use these operating syst
 Caveats
 ============
 
-I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. If it blows up on you, you can uninstall it. 
+I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. I don't care if you like tabs or Windows line endings and don't bother with handling them. If it blows up on you, you can uninstall it. 
