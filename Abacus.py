@@ -3,7 +3,6 @@ import sublime, sublime_plugin, re
 class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         candidates      = []
-        length_delta    = 0
         separators      = self.view.settings().get("abacus_alignment_separators")
         for separator in separators:
             candidates.extend(self.find_candidates_for_separator(separator))
@@ -25,18 +24,17 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 right_col = " %s" % right_col
             #Snap the left side together
             left_col = left_col.ljust(indent + left_col_width)
-            candidate["replacement"] = "%s%s" % (left_col, right_col)
-            #We're adding and removing shit left and right, so
-            #all existing regions need to shift.
-            candidate["region"] = sublime.Region(candidate["region"].begin() + length_delta, candidate["region"].end() + length_delta)
-            #And the next one will move even more
-            length_delta += len(candidate["replacement"]) - len(candidate["original"])            
-            #print repr(candidate["replacement"]), candidate["region"]
-            self.view.replace(edit, candidate["region"], candidate["replacement"])
+            candidate["replacement"] = "%s%s\n" % (left_col, right_col)
+            
+            #Replace each line in its entirety
+            full_line = self.region_from_line_number(candidate["line"])
+            self.view.replace(edit, full_line, candidate["replacement"])
+            
         #Scroll and muck with the selection
         self.view.sel().clear()
-        for region in [changed["region"] for changed in candidates]:
-            self.view.show_at_center(region)
+        #for region in [self.region_from_line_number(changed["line"]) for changed in candidates]:
+        #    self.view.sel().add(self.view.sel().cover(region))
+        #self.view.show_at_center()
 
     def find_candidates_for_separator(self, separator):
         token       = separator["token"]
@@ -53,7 +51,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     sep             = tokenized.group(2)
                     initial_indent  = re.match("\s+", left_col)
                     if initial_indent: initial_indent = len(initial_indent.group(0))
-                    candidate       = { "region":           line,
+                    candidate       = { "line":             self.view.rowcol(line.begin())[0],
                                         "original":         line_content,
                                         "separator":        sep,
                                         "gravity":          separator["gravity"],
@@ -94,3 +92,6 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
     def detab(self, input):
         return input.expandtabs(self.tab_width)
+        
+    def region_from_line_number(self, line_number):
+        return self.view.full_line(self.view.text_point(line_number, 0))
