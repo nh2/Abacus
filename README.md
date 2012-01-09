@@ -59,3 +59,8 @@ Usage
 Make a (single) selection, then `command + control + ]`.
 
 There's no Linux or Windows keymappings because I don't use these operating systems (at least not their GUIs) and have no idea what's appropriate for them. If you have suggestions, I'm all ears. 
+
+Caveats
+============
+
+I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. If it blows up on you, you can uninstall it. 
