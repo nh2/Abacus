@@ -33,9 +33,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
         #Scroll and muck with the selection
         self.view.sel().clear()
         for region in [self.region_from_line_number(changed["line"]) for changed in candidates]:
-            minus_newline = sublime.Region(region.begin(), region.end() - 1)
-            self.view.sel().add(minus_newline)
-            self.view.show_at_center(minus_newline)
+            start_of_right_col = region.begin() + indent + left_col_width
+            insertion_point = sublime.Region(start_of_right_col, start_of_right_col)
+            self.view.sel().add(insertion_point)
+            self.view.show_at_center(insertion_point)
 
     def find_candidates_for_separator(self, separator):
         token       = separator["token"]
