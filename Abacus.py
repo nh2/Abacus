@@ -4,8 +4,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         candidates      = []
         length_delta    = 0
-        separators      = [ { "token": "\:", "gravity": "left" } ]
-
+        separators      = self.view.settings().get("abacus_alignment_separators")
         for separator in separators:
             candidates.extend(self.find_candidates_for_separator(separator))
         
