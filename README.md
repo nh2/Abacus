@@ -50,6 +50,8 @@ heyLookIKnowPolishNotation    = "Humpty Dance"
 
 All with the same config.
 
+Note that the `token` properties should be valid Python regexes, and since the config file is in JSON, that means double slashes everywhere. Awful, I know.
+
 
 Usage
 ============
