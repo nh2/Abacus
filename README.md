@@ -56,11 +56,11 @@ Note that the `token` properties should be valid Python regexes, and since the c
 Usage
 ============
 
-Make a (single) selection, then `command + control + ]`.
+Make a selection, then `command + control + ]`.
 
 There's no Linux or Windows keymappings because I don't use these operating systems (at least not their GUIs) and have no idea what's appropriate for them. If you have suggestions, I'm all ears. 
 
 Caveats
 ============
 
-I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. I don't care if you like tabs or Windows line endings and don't bother with handling them. If it blows up on you, you can uninstall it. 
+I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. The regex performing the tokenization is ridiculously simple and will probably need to be replaced with a real parser. I don't care if you like tabs or Windows line endings and don't bother with handling them. If it blows up on you, you can uninstall it. 
