@@ -36,18 +36,26 @@ While the CoffeeScript the intern wrote can go from this:
 
 ``` CoffeeScript
 events:
-    #"keyup input:text, input:password":           "userChangedNameboundField"
+    #"keyup input:text, input:password":                "userChangedNameboundField"
     "change input:text, input:password": "userChangedNameboundField"
     "change select[name='settings.timezone']": "userChangedNameboundField"
+
+woah="Shock G and Humpty Hump are actually Tyler Durden"
+noFrigginWayBrah ="Guy Fawkes masks don't make you a hacker"
+number_of_stupid_mustaches =    9
 ```
 
 To this:
 
 ``` CoffeeScript
 events:
-   #"keyup input:text, input:password":        "userChangedNameboundField"
-   "change input:text, input:password":        "userChangedNameboundField"
-   "change select[name='settings.timezone']":  "userChangedNameboundField"
+    #"keyup input:text, input:password":        "userChangedNameboundField"
+    "change input:text, input:password":        "userChangedNameboundField"
+    "change select[name='settings.timezone']":  "userChangedNameboundField"
+
+    woah                                        = "Shock G and Humpty Hump are actually Tyler Durden"
+    noFrigginWayBrah                            = "Guy Fawkes masks don't make you a hacker"
+    number_of_stupid_mustaches                  = 9
 ```
 
 All with the same config.
