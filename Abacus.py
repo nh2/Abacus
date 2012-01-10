@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, re
+import sublime, sublime_plugin, re, sys
 
 class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -28,6 +28,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
             
             #Replace each line in its entirety
             full_line = self.region_from_line_number(candidate["line"])
+            sys.stdout.write(candidate["replacement"])
             self.view.replace(edit, full_line, candidate["replacement"])
             
         #Scroll and muck with the selection
@@ -39,28 +40,44 @@ class AbacusCommand(sublime_plugin.TextCommand):
             self.view.show_at_center(insertion_point)
 
     def find_candidates_for_separator(self, separator):
-        token       = separator["token"]
-        tokenizer   = re.compile("([^%s]+)(%s)(.+)" % (token, token))
-        selection   = self.view.sel()
-        alignment_candidates = []
+        token                   = separator["token"]
+        selection               = self.view.sel()
+        alignment_candidates    = []
         for region in selection:
             for line in self.view.lines(region):
-                line_content        = self.view.substr(line)
-                tokenized           = tokenizer.match(line_content)
-                if tokenized:
-                    left_col        = self.detab(tokenized.group(1))
-                    right_col       = self.detab(tokenized.group(3))
-                    sep             = tokenized.group(2)
-                    initial_indent  = re.match("\s+", left_col)
-                    if initial_indent: initial_indent = len(initial_indent.group(0))
-                    candidate       = { "line":             self.view.rowcol(line.begin())[0],
-                                        "original":         line_content,
-                                        "separator":        sep,
-                                        "gravity":          separator["gravity"],
-                                        "initial_indent":   initial_indent,
-                                        "left_col":         left_col.lstrip(),
-                                        "right_col":        right_col.rstrip() }
-                    alignment_candidates.append(candidate)
+                line_content    = self.view.substr(line)
+                #Is it even conceivable that this line might
+                #be alignable?
+                if line_content.find(token) != -1:
+                    #Collapse any string literals that might
+                    #also contain our separator token so that
+                    #we can reliably find the location of the 
+                    #real McCoy.
+                    collapsed   = line_content
+                    token_pos   = None
+                    for match in re.finditer("(\"[^\"]*\"|'[^']*')", line_content):
+                        quoted_string   = match.group(0)
+                        collapsed       = collapsed.replace(quoted_string, "_" * len(quoted_string))
+                    #Split on the last occurrence of the token
+                    partitioned = collapsed.rpartition(token)
+                    
+                    #Did that give us valid columns?
+                    if len(partitioned[0]) and len(partitioned[1]) and len(partitioned[2]):
+                        #Then there's our boundary line
+                        token_pos       = len(partitioned[0])
+                        left_col        = self.detab(line_content[:token_pos])
+                        right_col       = self.detab(line_content[token_pos + len(token):])
+                        sep             = line_content[token_pos:token_pos + len(token)]
+                        initial_indent  = re.match("\s+", left_col)
+                        if initial_indent: initial_indent = len(initial_indent.group(0))
+                        candidate       = { "line":             self.view.rowcol(line.begin())[0],
+                                            "original":         line_content,
+                                            "separator":        sep,
+                                            "gravity":          separator["gravity"],
+                                            "initial_indent":   initial_indent,
+                                            "left_col":         left_col.lstrip(),
+                                            "right_col":        right_col.rstrip() }
+                        alignment_candidates.append(candidate)
         return alignment_candidates
 
     def calc_left_col_width(self, candidates):

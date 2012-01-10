@@ -1,4 +1,4 @@
 {
-    "abacus_alignment_separators": [    { "token": "\\:", "gravity": "left" }, 
-                                        { "token": "\\=", "gravity": "right"}    ]
+    "abacus_alignment_separators": [    { "token": ":", "gravity": "left" }, 
+                                        { "token": "=", "gravity": "right"}    ]
 }

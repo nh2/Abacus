@@ -7,8 +7,8 @@ In Abacus, you can slide the midline separator toward either either the left or 
 
 ``` json
 {
-    "abacus_alignment_separators": [    { "token": "\\:", "gravity": "left" }, 
-                                        { "token": "\\=", "gravity": "right"}    ]
+    "abacus_alignment_separators": [    { "token": ":", "gravity": "left" }, 
+                                        { "token": "=", "gravity": "right"}    ]
 }
 ```
 
@@ -32,26 +32,27 @@ a
 }
 ```
 
-While the code the intern wrote can go from this:
+While the CoffeeScript the intern wrote can go from this:
 
-``` Python
-someVar = "blah"
-someOtherVar = "blah as well"
-heyLookIKnowPolishNotation = "Humpty Dance"
+``` CoffeeScript
+events:
+    #"keyup input:text, input:password":           "userChangedNameboundField"
+    "change input:text, input:password": "userChangedNameboundField"
+    "change select[name='settings.timezone']": "userChangedNameboundField"
 ```
 
 To this:
 
-``` Python
-someVar                       = "blah"
-someOtherVar                  = "blah as well"
-heyLookIKnowPolishNotation    = "Humpty Dance"
+``` CoffeeScript
+events:
+   #"keyup input:text, input:password":        "userChangedNameboundField"
+   "change input:text, input:password":        "userChangedNameboundField"
+   "change select[name='settings.timezone']":  "userChangedNameboundField"
 ```
 
 All with the same config.
 
-Note that the `token` properties should be valid Python regexes, and since the config file is in JSON, that means double slashes everywhere. Awful, I know.
-
+Now how much would you pay?
 
 Usage
 ============
@@ -63,4 +64,4 @@ There's no Linux or Windows keymappings because I don't use these operating syst
 Caveats
 ============
 
-I wrote this in one night and haven't tested it with complex selections or multi-character separators at all. The regex performing the tokenization is ridiculously simple and will probably need to be replaced with a real parser. I don't care if you like tabs or Windows line endings and don't bother with handling them. If it blows up on you, you can uninstall it. 
+I don't care if you like tabs or Windows line endings and don't bother with handling them. Need to get smarter about matching against longer separator tokens first.
