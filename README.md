@@ -54,7 +54,7 @@ events:
     "change select[name='settings.timezone']":  "userChangedNameboundField"
 
     woah                                        = "Shock G and Humpty Hump are actually Tyler Durden"
-    noFrigginWayBrah                            = "Guy Fawkes masks don't make you a hacker"
+    noFrigginWayBrah                            = "Guy Fawkes masks make you a hacker"
     number_of_stupid_mustaches                  = 9
 ```
 
