@@ -4,7 +4,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         candidates      = []
         separators      = self.view.settings().get("abacus_alignment_separators")
-        for separator in separators:
+        for separator in sorted(separators, key=lambda sep: len(sep["token"])):
             candidates.extend(self.find_candidates_for_separator(separator))
         
         indent, left_col_width  = self.calc_left_col_width(candidates)
@@ -19,8 +19,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 left_col = "%s%s" % (left_col, candidate["separator"])
             elif candidate["gravity"] == "right":
                 sep_space = left_col_width + indent - len(left_col) - len(candidate["separator"])
-                #Push the separator over the tab boundary
-                left_col = "%s%s %s" % (left_col, " " * sep_space, candidate["separator"])
+                #Push the separator ONE separator's width over the tab boundary
+                left_col = "%s%s%s%s" % (left_col, " " * sep_space, " " * len(candidate["separator"]), candidate["separator"])
                 right_col = " %s" % right_col
             #Snap the left side together
             left_col = left_col.ljust(indent + left_col_width)
@@ -53,8 +53,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     #also contain our separator token so that
                     #we can reliably find the location of the 
                     #real McCoy.
-                    collapsed   = line_content
-                    token_pos   = None
+                    collapsed           = line_content
+                    token_pos           = None
                     for match in re.finditer("(\"[^\"]*\"|'[^']*')", line_content):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "_" * len(quoted_string))
