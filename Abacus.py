@@ -58,7 +58,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     for match in re.finditer("(\"[^\"]*\"|'[^']*')", line_content):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "_" * len(quoted_string))
-                    #Split on the last occurrence of the token
+                    #Split on the first/last occurrence of the token
                     if separator["gravity"] == "right":
                         partitioned = collapsed.rpartition(token)
                     elif separator["gravity"] == "left":
