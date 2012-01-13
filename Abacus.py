@@ -89,7 +89,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         sep_width   = 0
 
         for candidate in candidates:
-            indent      = max([candidate["initial_indent"], indent, self.tab_width])
+            indent      = max([candidate["initial_indent"], indent])
             sep_width   = max([len(candidate["separator"]), sep_width])
             width       = max([len(candidate["left_col"]), width])
 
@@ -104,7 +104,11 @@ class AbacusCommand(sublime_plugin.TextCommand):
         width += width % self.tab_width
 
         #Make sure we fall on a tab boundary
-        indent -= indent % self.tab_width
+        if indent:
+            if indent > self.tab_width:
+                indent -= indent % self.tab_width
+            else:
+                indent = self.tab_width
             
         return indent, width
     
