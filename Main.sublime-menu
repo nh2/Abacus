@@ -1,4 +1,15 @@
 [  
+    {
+        "id":         "selection",
+        "children":   
+        [
+            { "id": "abacus" },
+            { 
+                "command": "abacus",
+                "caption": "Abacus Align"
+            }
+        ]
+    },
     {  
         "caption":    "Preferences",
         "mnemonic":   "n",
@@ -82,5 +93,5 @@
                 ]
             }
         ]
-    }  
+    }
 ]
