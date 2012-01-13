@@ -59,7 +59,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "_" * len(quoted_string))
                     #Split on the last occurrence of the token
-                    partitioned = collapsed.rpartition(token)
+                    if separator["gravity"] == "right":
+                        partitioned = collapsed.rpartition(token)
+                    elif separator["gravity"] == "left":
+                        partitioned = collapsed.partition(token)
                     
                     #Did that give us valid columns?
                     if len(partitioned[0]) and len(partitioned[1]) and len(partitioned[2]):
