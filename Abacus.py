@@ -56,14 +56,15 @@ class AbacusCommand(sublime_plugin.TextCommand):
         for region in selection:
             for line in self.view.lines(region):
                 line_no         = self.view.rowcol(line.begin())[0]
-                line_content    = self.view.substr(line)
-
+            
                 #Never match a line more than once
                 if len([match for match in candidates if match["line"] == line_no]):
                     continue
-                    
+
                 #Is it even conceivable that this line might
                 #be alignable?
+                line_content    = self.view.substr(line)
+
                 if line_content.find(token) != -1:
                     #Collapse any string literals that might
                     #also contain our separator token so that
