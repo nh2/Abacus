@@ -109,10 +109,9 @@ class AbacusCommand(sublime_plugin.TextCommand):
             indent      = max([candidate["initial_indent"], indent])
             sep_width   = max([len(candidate["separator"]), sep_width])
             width       = max([len(candidate["left_col"]), width])
-            print repr(candidate)
         
         width += sep_width
-        
+
         #Bump up to the next multiple of tab_width
         width += (self.tab_width - width % self.tab_width)
 
