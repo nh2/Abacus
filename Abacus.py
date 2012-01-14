@@ -5,14 +5,22 @@ class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         candidates      = []
         separators      = self.view.settings().get("abacus_alignment_separators")
+
+        #Run through the separators accumulating alignment candidates
+        #starting with the longest ones i.e. '==' before '='.
         for separator in sorted(separators, key=lambda sep: -len(sep["token"])):
             self.find_candidates_for_separator(separator, candidates)
         
+        #After accumulation is done, figure out what the minimum required
+        #indentation and column width is going to have to be to make every
+        #candidate happy. Avoid selecting discontiguous regions requiring
+        #differing levels of indentation.
         indent, left_col_width  = self.calc_left_col_width(candidates)
         indentor                = Template("$indentation$left_col")
         lg_aligner              = Template("$left_col$separator")
         rg_aligner              = Template("$left_col$gutter$separator_padding$separator")
 
+        #Perform actual alignments based on gravitational pull of separators
         for candidate in candidates:
             sep_width   = len(candidate["separator"])
             #Normalize indentation
@@ -31,6 +39,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                                     gutter              = " " * gutter_width,
                                                     separator_padding   = " " * sep_width,
                                                     separator           = candidate["separator"] )
+                #Most sane people will want a space between the operator and the value.
                 right_col = " %s" % right_col
             #Snap the left side together
             left_col                    = left_col.ljust(indent + left_col_width)
@@ -47,7 +56,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
             start_of_right_col  = region.begin() + indent + left_col_width
             insertion_point     = sublime.Region(start_of_right_col, start_of_right_col)
             self.view.sel().add(insertion_point)
-            self.view.show_at_center(insertion_point)
+            #self.view.show_at_center(insertion_point)
 
     def find_candidates_for_separator(self, separator, candidates):
         token                   = separator["token"]
@@ -72,9 +81,11 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     #real McCoy.
                     collapsed           = line_content
                     token_pos           = None
+
                     for match in re.finditer("(\"[^\"]*\"|'[^']*')", line_content):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
+
                     #Split on the first/last occurrence of the token
                     if separator["gravity"] == "right":
                         partitioned = collapsed.rpartition(token)
@@ -98,7 +109,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                             "left_col":         left_col.lstrip(),
                                             "right_col":        right_col.rstrip() }
                         new_candidates.append(candidate)
-            
+        #Poke more stuff in the accumulator
         candidates.extend(new_candidates)
 
     def calc_left_col_width(self, candidates):
