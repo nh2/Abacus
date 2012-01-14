@@ -5,8 +5,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         candidates      = []
         separators      = self.view.settings().get("abacus_alignment_separators")
-        for separator in sorted(separators, key=lambda sep: len(sep["token"])):
-            candidates.extend(self.find_candidates_for_separator(separator))
+        for separator in sorted(separators, key=lambda sep: -len(sep["token"])):
+            self.find_candidates_for_separator(separator, candidates)
         
         indent, left_col_width  = self.calc_left_col_width(candidates)
         indentor                = Template("$indentation$left_col")
@@ -49,10 +49,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
             self.view.sel().add(insertion_point)
             self.view.show_at_center(insertion_point)
 
-    def find_candidates_for_separator(self, separator):
+    def find_candidates_for_separator(self, separator, candidates):
         token                   = separator["token"]
         selection               = self.view.sel()
-        alignment_candidates    = []
+        new_candidates          = []
         for region in selection:
             for line in self.view.lines(region):
                 line_content    = self.view.substr(line)
@@ -90,8 +90,15 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                             "initial_indent":   initial_indent,
                                             "left_col":         left_col.lstrip(),
                                             "right_col":        right_col.rstrip() }
-                        alignment_candidates.append(candidate)
-        return alignment_candidates
+                        new_candidates.append(candidate)
+
+        #Never match a line more than once
+        for existing_candidate in candidates:
+            for new_candidate in new_candidates:
+                if existing_candidate["line"] == new_candidate["line"]:
+                    new_candidates.remove(new_candidate)
+            
+        candidates.extend(new_candidates)
 
     def calc_left_col_width(self, candidates):
         width           = 0
@@ -102,11 +109,15 @@ class AbacusCommand(sublime_plugin.TextCommand):
             indent      = max([candidate["initial_indent"], indent])
             sep_width   = max([len(candidate["separator"]), sep_width])
             width       = max([len(candidate["left_col"]), width])
-
-        width += sep_width
-
+            print repr(candidate)
+        
+        print width
         #Bump up to the next multiple of tab_width
         width += (self.tab_width - width % self.tab_width)
+        print width
+
+        width += sep_width
+        print width
 
         #Make sure we start on a tab boundary
         if indent and indent % self.tab_width:

@@ -9,6 +9,7 @@
         { "token": "/=",    "gravity": "right" },
         { "token": "?=",    "gravity": "right" },
         { "token": "||=",   "gravity": "right" },
-        { "token": "%=",    "gravity": "right" }
+        { "token": "%=",    "gravity": "right" },
+        { "token": "==",    "gravity": "right" }
     ]
 }
