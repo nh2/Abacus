@@ -9,19 +9,28 @@ class AbacusCommand(sublime_plugin.TextCommand):
             candidates.extend(self.find_candidates_for_separator(separator))
         
         indent, left_col_width  = self.calc_left_col_width(candidates)
+        indentor                = Template("$indentation$left_col")
+        lg_aligner              = Template("$left_col$separator")
+        rg_aligner              = Template("$left_col$gutter$separator_padding$separator")
 
         for candidate in candidates:
+            sep_width   = len(candidate["separator"])
             #Normalize indentation
-            left_col    = "%s%s" % (" " * indent, candidate["left_col"])
+            left_col    = indentor.substitute(  indentation = " " * indent, 
+                                                left_col    = candidate["left_col"] )
             right_col   = candidate["right_col"].strip()
             #Marry the separator to the proper column
             if candidate["gravity"] == "left":
                 #Separator sits flush left
-                left_col = "%s%s" % (left_col, candidate["separator"])
+                left_col = lg_aligner.substitute(   left_col    = left_col, 
+                                                    separator   = candidate["separator"] )
             elif candidate["gravity"] == "right":
-                sep_space = left_col_width + indent - len(left_col) - len(candidate["separator"])
+                gutter_width = left_col_width + indent - len(left_col) - len(candidate["separator"])
                 #Push the separator ONE separator's width over the tab boundary
-                left_col = "%s%s%s%s" % (left_col, " " * sep_space, " " * len(candidate["separator"]), candidate["separator"])
+                left_col = rg_aligner.substitute(   left_col            = left_col,
+                                                    gutter              = " " * gutter_width,
+                                                    separator_padding   = " " * sep_width,
+                                                    separator           = candidate["separator"] )
                 right_col = " %s" % right_col
             #Snap the left side together
             left_col                    = left_col.ljust(indent + left_col_width)
