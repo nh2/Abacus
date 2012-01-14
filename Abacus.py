@@ -28,7 +28,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
             
             #Replace each line in its entirety
             full_line = self.region_from_line_number(candidate["line"])
-            sys.stdout.write(candidate["replacement"])
+            #sys.stdout.write(candidate["replacement"])
             self.view.replace(edit, full_line, candidate["replacement"])
             
         #Scroll and muck with the selection
@@ -101,9 +101,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
         if width % self.tab_width == 0:
             width += self.tab_width
         
-        width += width % self.tab_width
-
-        #Make sure we fall on a tab boundary
+        #Bump up to the next multiple of tab_width
+        width = (width | self.tab_width) + 1
+        
+        #Make sure we start on a tab boundary
         if indent:
             if indent > self.tab_width:
                 indent -= indent % self.tab_width
