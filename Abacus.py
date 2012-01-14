@@ -1,4 +1,5 @@
 import sublime, sublime_plugin, re, sys
+from string import Template
 
 class AbacusCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -23,8 +24,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 left_col = "%s%s%s%s" % (left_col, " " * sep_space, " " * len(candidate["separator"]), candidate["separator"])
                 right_col = " %s" % right_col
             #Snap the left side together
-            left_col = left_col.ljust(indent + left_col_width)
-            candidate["replacement"] = "%s%s\n" % (left_col, right_col)
+            left_col                    = left_col.ljust(indent + left_col_width)
+            candidate["replacement"]    = "%s%s\n" % (left_col, right_col)
             
             #Replace each line in its entirety
             full_line = self.region_from_line_number(candidate["line"])
@@ -34,8 +35,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
         #Scroll and muck with the selection
         self.view.sel().clear()
         for region in [self.region_from_line_number(changed["line"]) for changed in candidates]:
-            start_of_right_col = region.begin() + indent + left_col_width
-            insertion_point = sublime.Region(start_of_right_col, start_of_right_col)
+            start_of_right_col  = region.begin() + indent + left_col_width
+            insertion_point     = sublime.Region(start_of_right_col, start_of_right_col)
             self.view.sel().add(insertion_point)
             self.view.show_at_center(insertion_point)
 
@@ -84,9 +85,9 @@ class AbacusCommand(sublime_plugin.TextCommand):
         return alignment_candidates
 
     def calc_left_col_width(self, candidates):
-        width       = 0
-        indent      = 0
-        sep_width   = 0
+        width           = 0
+        indent          = 0
+        sep_width       = 0
 
         for candidate in candidates:
             indent      = max([candidate["initial_indent"], indent])
@@ -95,17 +96,11 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
         width += sep_width
 
-        #If we're going to fall exactly on a tab boundary
-        #tab out one more so the right column isn't butted
-        #up against us.
-        if width % self.tab_width == 0:
-            width += self.tab_width
-        
         #Bump up to the next multiple of tab_width
         width += (self.tab_width - width % self.tab_width)
-        
+
         #Make sure we start on a tab boundary
-        if indent:
+        if indent and indent % self.tab_width:
             if indent > self.tab_width:
                 indent -= indent % self.tab_width
             else:
