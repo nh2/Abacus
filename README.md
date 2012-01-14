@@ -7,8 +7,19 @@ In Abacus, you can slide the midline separator toward either either the left or 
 
 ``` json
 {
-    "abacus_alignment_separators": [    { "token": ":", "gravity": "left" }, 
-                                        { "token": "=", "gravity": "right"}    ]
+    "abacus_alignment_separators": 
+    [    
+        { "token": ":",     "gravity": "left"  },
+        { "token": "=",     "gravity": "right" },
+        { "token": "+=",    "gravity": "right" },
+        { "token": "-=",    "gravity": "right" },
+        { "token": "*=",    "gravity": "right" },
+        { "token": "/=",    "gravity": "right" },
+        { "token": "?=",    "gravity": "right" },
+        { "token": "||=",   "gravity": "right" },
+        { "token": "%=",    "gravity": "right" },
+        { "token": "==",    "gravity": "right" }
+    ]
 }
 ```
 
@@ -72,4 +83,4 @@ There's no Linux or Windows keymappings because I don't use these operating syst
 Caveats
 ============
 
-I don't care if you like tabs or Windows line endings and don't bother with handling them. Need to get smarter about matching against longer separator tokens first.
+I don't care if you like real tabs or Windows line endings and don't bother with handling them.
