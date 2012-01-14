@@ -102,7 +102,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
             width += self.tab_width
         
         #Bump up to the next multiple of tab_width
-        width = (width | self.tab_width) + 1
+        width += (self.tab_width - width % self.tab_width)
         
         #Make sure we start on a tab boundary
         if indent:
