@@ -55,7 +55,13 @@ class AbacusCommand(sublime_plugin.TextCommand):
         new_candidates          = []
         for region in selection:
             for line in self.view.lines(region):
+                line_no         = self.view.rowcol(line.begin())[0]
                 line_content    = self.view.substr(line)
+
+                #Never match a line more than once
+                if len([match for match in candidates if match["line"] == line_no]):
+                    continue
+                    
                 #Is it even conceivable that this line might
                 #be alignable?
                 if line_content.find(token) != -1:
@@ -83,7 +89,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         sep             = line_content[token_pos:token_pos + len(token)]
                         initial_indent  = re.match("\s+", left_col)
                         if initial_indent: initial_indent = len(initial_indent.group(0))
-                        candidate       = { "line":             self.view.rowcol(line.begin())[0],
+                        candidate       = { "line":             line_no,
                                             "original":         line_content,
                                             "separator":        sep,
                                             "gravity":          separator["gravity"],
@@ -91,12 +97,6 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                             "left_col":         left_col.lstrip(),
                                             "right_col":        right_col.rstrip() }
                         new_candidates.append(candidate)
-
-        #Never match a line more than once
-        for existing_candidate in candidates:
-            for new_candidate in new_candidates:
-                if existing_candidate["line"] == new_candidate["line"]:
-                    new_candidates.remove(new_candidate)
             
         candidates.extend(new_candidates)
 
