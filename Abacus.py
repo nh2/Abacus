@@ -78,7 +78,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     if len(partitioned[0]) and len(partitioned[1]):
                         #Then there's our boundary line
                         token_pos       = len(partitioned[0])
-                        left_col        = self.detab(line_content[:token_pos])
+                        left_col        = self.detab(line_content[:token_pos]).rstrip()
                         right_col       = self.detab(line_content[token_pos + len(token):])
                         sep             = line_content[token_pos:token_pos + len(token)]
                         initial_indent  = re.match("\s+", left_col)
