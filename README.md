@@ -1,4 +1,4 @@
-Abacus Alignment Plugin
+Abacus Alignment Plugin for Sublime Text 2
 ================
 
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
