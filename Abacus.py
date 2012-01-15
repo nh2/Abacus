@@ -8,7 +8,14 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
         #Run through the separators accumulating alignment candidates
         #starting with the longest ones i.e. '==' before '='.
-        for separator in sorted(separators, key=lambda sep: -len(sep["token"])):
+        longest_first = sorted(separators, key=lambda sep: -len(sep["token"]))
+
+        #Favor those that lean right so assignments with slice notation in them
+        #get handled sanely
+        for separator in [righty for righty in longest_first if righty["gravity"] == "right"]:
+            self.find_candidates_for_separator(separator, candidates)
+
+        for separator in [lefty for lefty in longest_first if lefty["gravity"] == "left"]:
             self.find_candidates_for_separator(separator, candidates)
         
         #After accumulation is done, figure out what the minimum required
