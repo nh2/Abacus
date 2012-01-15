@@ -25,6 +25,8 @@ Abacus' one trick is that it allows you to slide the midline separator token--th
 }
 ```
 
+*Note that the above is a great example of multiple assignments per line which this plugin will **not** handle*
+
 This way that nasty-ass glob of CSS you inherited from the offshore contractor can go from this:
 
 ``` css
