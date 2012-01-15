@@ -25,7 +25,7 @@ Abacus' one trick is that it allows you to slide the midline separator token--th
 }
 ```
 
-*Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.
+*Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.*
 
 This way that nasty-ass glob of CSS you inherited from the offshore contractor can go from this:
 
