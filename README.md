@@ -3,7 +3,9 @@ Abacus Alignment Plugin for Sublime Text 2
 
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
 
-In Abacus, you can slide the midline separator toward either either the left or the right columns by giving each possible token a `gravity` property like so:
+Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line, then you're already an enemy of readability and this plugin will not help you.
+
+Abacus' one trick is that it allows you to slide the midline separator token--the thing that defines where the left column ends and the right column begins--toward either either the left or the right by giving each possible token a `gravity` property like so:
 
 ``` json
 {
@@ -71,6 +73,8 @@ events:
 
 All with the same config.
 
+And it does its best to leave the insertion point flush against the beginning of the right column so you can tab out further if need be. Note that the CoffeeScript example above highlights Abacus' indentation normalization process which can lead to syntactically invalid code in CoffeeScript and Python. In general, if different sections are meant to have different indentation levels, you should select and align them separately.
+
 Now how much would you pay?
 
 Usage
@@ -83,4 +87,4 @@ There's no Linux or Windows keymappings because I don't use these operating syst
 Caveats
 ============
 
-I don't care if you like real tabs or Windows line endings and don't bother with handling them.
+I don't care if you like real tabs or Windows line endings and don't bother with handling them. Seriously, what year is this? 
