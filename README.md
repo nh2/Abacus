@@ -73,7 +73,7 @@ events:
 
 All with the same config.
 
-And it does its best to leave the insertion point flush against the beginning of the right column so you can tab out further if need be. Note that the CoffeeScript example above highlights Abacus' indentation normalization process which can lead to syntactically invalid code in CoffeeScript and Python. In general, if different sections are meant to have different indentation levels, you should select and align them separately.
+And it does its best to leave the insertion point flush against the beginning of the right column so you can tab out further if need be. Note that the CoffeeScript example above highlights Abacus' indentation normalization process which can lead to syntactically invalid code in CoffeeScript and Python. In general, if different sections are meant to have different indentation levels, you should select and align them separately. CSS pseudoclasses like ``:before`` and ``:after`` can also throw it for a loop, so keep your selections as focused on the alignable parts as possible. This is not a full-blown beautifier. 
 
 Now how much would you pay?
 
