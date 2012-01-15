@@ -82,7 +82,7 @@ Now how much would you pay?
 Usage
 ============
 
-Make a selection, then `command + control + ]`.
+Make a selection, then `command + option + control + ]`.
 
 There's no Linux or Windows keymappings because I don't use these operating systems (at least not their GUIs) and have no idea what's appropriate for them. If you have suggestions, I'm all ears. 
 
