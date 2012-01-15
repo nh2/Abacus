@@ -82,7 +82,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     collapsed           = line_content
                     token_pos           = None
 
-                    for match in re.finditer("(\"[^\"]*(?<!\\\)\"|'[^']*(?<!\\\)')", line_content):
+                    for match in re.finditer(r"(\"[^\"]*(?<!\\)\"|'[^']*(?<!\\)')", line_content):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
 
