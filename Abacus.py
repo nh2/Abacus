@@ -71,7 +71,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     continue
 
                 #Is it even conceivable that this line might
-                #be alignable?
+                #be alignable? 
                 line_content    = self.view.substr(line)
 
                 if line_content.find(token) != -1:
@@ -82,7 +82,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                     collapsed           = line_content
                     token_pos           = None
 
-                    for match in re.finditer("(\"[^\"]*\"|'[^']*')", line_content):
+                    for match in re.finditer("(\"[^\"]*(?<!\\\)\"|'[^']*(?<!\\\)')", line_content):
                         quoted_string   = match.group(0)
                         collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
 
