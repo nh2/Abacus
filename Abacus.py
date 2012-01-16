@@ -121,8 +121,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         if initial_indent: 
                             initial_indent = len(initial_indent.group(0))
                             #Align to tab boundary
-                            if initial_indent % self.tab_width:
+                            if initial_indent % self.tab_width >= self.tab_width / 2:
                                 initial_indent += (self.tab_width - initial_indent % self.tab_width)
+                            else:
+                                initial_indent -= initial_indent % self.tab_width
                         candidate       = { "line":             line_no,
                                             "original":         line_content,
                                             "separator":        sep,
