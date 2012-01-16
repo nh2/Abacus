@@ -36,16 +36,14 @@ class AbacusCommand(sublime_plugin.TextCommand):
         for candidate in candidates:
             sep_width   = len(candidate["separator"])
             right_col   = candidate["right_col"].strip()
+            left_col    = indentor.substitute(  indentation = " " * candidate["initial_indent"], 
+                                                left_col    = candidate["left_col"] )
             #Marry the separator to the proper column
             if candidate["gravity"] == "left":
                 #Separator sits flush left
-                left_col    = indentor.substitute(  indentation = " " * max_indent, 
-                                                    left_col    = candidate["left_col"] )
                 left_col    = lg_aligner.substitute(left_col    = left_col, 
                                                     separator   = candidate["separator"] )
             elif candidate["gravity"] == "right":
-                left_col    = indentor.substitute(  indentation = " " * candidate["initial_indent"], 
-                                                    left_col    = candidate["left_col"] )
                 gutter_width = max_left_col_width + max_indent - len(left_col) - len(candidate["separator"])
                 #Push the separator ONE separator's width over the tab boundary
                 left_col    = rg_aligner.substitute(    left_col            = left_col,
