@@ -1,6 +1,8 @@
 Abacus Alignment Plugin for Sublime Text 2
 ================
 
+![This work?](http://dl.dropbox.com/u/5514249/Abacus.gif)
+
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
 
 Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line, then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
@@ -26,16 +28,6 @@ Abacus' one trick is that it allows you to slide the midline separator token--th
 ```
 
 *Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.*
-
-![This work?](http://dl.dropbox.com/u/5514249/Abacus.gif)
-
-All with the same config.
-
-And it does its best to leave the insertion point flush against the beginning of the right column so you can tab out further if need be. 
-
-CSS pseudoclasses like ``:before`` and ``:after`` can throw it for a loop, so keep your selections as focused on the alignable parts as possible. This is not a full-blown beautifier. 
-
-Now how much would you pay?
 
 Usage
 ============
