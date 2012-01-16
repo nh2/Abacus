@@ -25,9 +25,7 @@ My pony's one trick is that it allows you to slide the midline separator token--
 }
 ```
 
-*Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.*
-
-Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line, then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
+Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line (as I've done in the above config), then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
 
 Usage
 ============
