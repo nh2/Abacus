@@ -5,9 +5,7 @@ Abacus Alignment Plugin for Sublime Text 2
 
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
 
-Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line, then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
-
-Abacus' one trick is that it allows you to slide the midline separator token--the thing that defines where the left column ends and the right column begins--toward either either the left or the right by giving each possible token a `gravity` property like so:
+My pony's one trick is that it allows you to slide the midline separator token--the thing that defines where the left column ends and the right column begins--toward either either the left or the right by giving each possible token a `gravity` property like so:
 
 ``` json
 {
@@ -28,6 +26,8 @@ Abacus' one trick is that it allows you to slide the midline separator token--th
 ```
 
 *Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.*
+
+Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line, then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
 
 Usage
 ============
