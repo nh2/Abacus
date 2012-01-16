@@ -27,51 +27,7 @@ Abacus' one trick is that it allows you to slide the midline separator token--th
 
 *Note that the above is a great example of multiple assignments per line. This plugin will only pay attention to the first one and treat the remainder as part of a single right column.*
 
-This way that nasty-ass glob of CSS you inherited from the offshore contractor can go from this:
-
-``` css
-a 
-{
-color:#00f;
-    text-decoration:none;
-}
-```
-
-To this:
-
-``` css
-a 
-{
-    color:              #00f;
-    text-decoration:    none;
-}
-```
-
-While the CoffeeScript the intern wrote can go from this:
-
-``` CoffeeScript
-events:
-    #"keyup input:text, input:password":                "userChangedNameboundField"
-    "change input:text, input:password": "userChangedNameboundField"
-    "change select[name='settings.timezone']": "userChangedNameboundField"
-
-woah="Shock G and Humpty Hump are actually Tyler Durden"
-noFrigginWayBrah ="Guy Fawkes masks make you a hacker"
-number_of_stupid_mustaches =    9
-```
-
-To this:
-
-``` CoffeeScript
-events:                                         
-    #"keyup input:text, input:password":        "userChangedNameboundField"
-    "change input:text, input:password":        "userChangedNameboundField"
-    "change select[name='settings.timezone']":  "userChangedNameboundField"
-
-woah                                            = "Shock G and Humpty Hump are actually Tyler Durden"
-noFrigginWayBrah                                = "Guy Fawkes masks make you a hacker"
-number_of_stupid_mustaches                      = 9
-```
+![This work?](http://dl.dropbox.com/u/5514249/Abacus.gif)
 
 All with the same config.
 
