@@ -8,8 +8,11 @@ class AbacusCommand(sublime_plugin.TextCommand):
         perform a series of replacements.
     """
     def run(self, edit):
-        candidates      = []
-        separators      = self.view.settings().get("abacus_alignment_separators")
+        candidates  = []
+        separators  = self.view.settings().get("abacus_alignment_separators")
+        indentor    = Template("$indentation$left_col")
+        lg_aligner  = Template("$left_col$separator")
+        rg_aligner  = Template("$left_col$gutter$separator_padding$separator")
 
         #Run through the separators accumulating alignment candidates
         #starting with the longest ones i.e. '==' before '='.
@@ -27,16 +30,13 @@ class AbacusCommand(sublime_plugin.TextCommand):
         #indentation and column width is going to have to be to make every
         #candidate happy. Avoid selecting discontiguous regions requiring
         #differing levels of indentation.
-        indent, left_col_width  = self.calc_left_col_width(candidates)
-        indentor                = Template("$indentation$left_col")
-        lg_aligner              = Template("$left_col$separator")
-        rg_aligner              = Template("$left_col$gutter$separator_padding$separator")
+        max_indent, max_left_col_width  = self.calc_left_col_width(candidates)
 
         #Perform actual alignments based on gravitational affinity of separators
         for candidate in candidates:
             sep_width   = len(candidate["separator"])
             #Normalize indentation
-            left_col    = indentor.substitute(  indentation = " " * indent, 
+            left_col    = indentor.substitute(  indentation = " " * candidate["initial_indent"], 
                                                 left_col    = candidate["left_col"] )
             right_col   = candidate["right_col"].strip()
             #Marry the separator to the proper column
@@ -45,7 +45,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 left_col = lg_aligner.substitute(   left_col    = left_col, 
                                                     separator   = candidate["separator"] )
             elif candidate["gravity"] == "right":
-                gutter_width = left_col_width + indent - len(left_col) - len(candidate["separator"])
+                gutter_width = max_left_col_width + max_indent - len(left_col) - len(candidate["separator"])
                 #Push the separator ONE separator's width over the tab boundary
                 left_col = rg_aligner.substitute(   left_col            = left_col,
                                                     gutter              = " " * gutter_width,
@@ -54,7 +54,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 #Most sane people will want a space between the operator and the value.
                 right_col = " %s" % right_col
             #Snap the left side together
-            left_col                    = left_col.ljust(indent + left_col_width)
+            left_col                    = left_col.ljust(max_indent + max_left_col_width)
             candidate["replacement"]    = "%s%s\n" % (left_col, right_col)
             
             #Replace each line in its entirety
@@ -65,7 +65,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         #Scroll and muck with the selection
         self.view.sel().clear()
         for region in [self.region_from_line_number(changed["line"]) for changed in candidates]:
-            start_of_right_col  = region.begin() + indent + left_col_width
+            start_of_right_col  = region.begin() + max_indent + max_left_col_width
             insertion_point     = sublime.Region(start_of_right_col, start_of_right_col)
             self.view.sel().add(insertion_point)
             #self.view.show_at_center(insertion_point)
@@ -116,8 +116,12 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         left_col        = self.detab(line_content[:token_pos]).rstrip()
                         right_col       = self.detab(line_content[token_pos + len(token):])
                         sep             = line_content[token_pos:token_pos + len(token)]
-                        initial_indent  = re.match("\s+", left_col)
-                        if initial_indent: initial_indent = len(initial_indent.group(0))
+                        initial_indent  = re.match("\s+", left_col) or 0
+                        if initial_indent: 
+                            initial_indent = len(initial_indent.group(0))
+                            #Align to tab boundary
+                            if initial_indent % self.tab_width:
+                                initial_indent += (self.tab_width - initial_indent % self.tab_width)
                         candidate       = { "line":             line_no,
                                             "original":         line_content,
                                             "separator":        sep,
@@ -137,28 +141,21 @@ class AbacusCommand(sublime_plugin.TextCommand):
             possible column width that will accomodate them all
             when aligned to a tab stop boundary.
         """
-        width           = 0
-        indent          = 0
-        sep_width       = 0
+        max_width           = 0
+        max_indent          = 0
+        max_sep_width       = 0
 
         for candidate in candidates:
-            indent      = max([candidate["initial_indent"], indent])
-            sep_width   = max([len(candidate["separator"]), sep_width])
-            width       = max([len(candidate["left_col"]), width])
+            max_indent      = max([candidate["initial_indent"], max_indent])
+            max_sep_width   = max([len(candidate["separator"]), max_sep_width])
+            max_width       = max([len(candidate["left_col"]), max_width])
         
-        width += sep_width
+        max_width += max_sep_width
 
         #Bump up to the next multiple of tab_width
-        width += (self.tab_width - width % self.tab_width)
-
-        #Make sure we start on a tab boundary
-        if indent and indent % self.tab_width:
-            if indent > self.tab_width:
-                indent -= indent % self.tab_width
-            else:
-                indent = self.tab_width
+        max_width += (self.tab_width - max_width % self.tab_width)
             
-        return indent, width
+        return max_indent, max_width
     
     @property
     def tab_width(self):
