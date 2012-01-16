@@ -9,7 +9,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
     """
     def run(self, edit):
         candidates  = []
-        separators  = self.view.settings().get("abacus_alignment_separators")
+        separators  = self.view.settings().get("com.khiltd.abacus.separators")
         indentor    = Template("$indentation$left_col")
         lg_aligner  = Template("$left_col$separator")
         rg_aligner  = Template("$left_col$gutter$separator_padding$separator")

@@ -9,7 +9,7 @@ My pony's one trick is that it allows you to slide the midline separator token--
 
 ``` json
 {
-    "abacus_alignment_separators": 
+    "com.khiltd.abacus.separators": 
     [    
         { "token": ":",     "gravity": "left"  },
         { "token": "=",     "gravity": "right" },

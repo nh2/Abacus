@@ -1,5 +1,5 @@
 {
-    "abacus_alignment_separators": 
+    "com.khiltd.abacus.separators": 
     [    
         { "token": ":",     "gravity": "left"  },
         { "token": "=",     "gravity": "right" },
