@@ -111,7 +111,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         partitioned = collapsed.partition(token)
                     
                     #Did that give us valid columns?
-                    if len(partitioned[0]) and len(partitioned[1]):
+                    if len(partitioned[0]) and len(partitioned[1]) and len(partitioned[2]):
                         #Then there's our boundary line
                         token_pos       = len(partitioned[0])
                         left_col        = self.detab(line_content[:token_pos]).rstrip()
