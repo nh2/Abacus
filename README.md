@@ -5,7 +5,7 @@ Abacus Alignment Plugin for Sublime Text 2
 
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
 
-My pony's one trick is that it allows you to slide the midline separator token--the thing that defines where the left column ends and the right column begins--toward either either the left or the right by giving each possible token a `gravity` property like so:
+My pony's one anal trick is that it allows you to slide the midline separator token--the thing that defines where the left column ends and the right column begins--toward either the left or the right by giving each possible token a `gravity` property like so:
 
 ``` json
 {
