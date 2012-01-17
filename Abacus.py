@@ -36,13 +36,12 @@ class AbacusCommand(sublime_plugin.TextCommand):
         for candidate in candidates:
             indent      = 0
             if not candidate["preserve_indent"]:
-                indent = max_indent
+                indent  = max_indent
             else:
-                indent = candidate["adjusted_indent"]
+                indent  = candidate["adjusted_indent"]
 
             sep_width   = len(candidate["separator"])
             right_col   = candidate["right_col"].strip()
-
             left_col    = indentor.substitute(  indentation = " " * indent, 
                                                 left_col    = candidate["left_col"] )
             #Marry the separator to the proper column
