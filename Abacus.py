@@ -126,7 +126,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                             initial_indent = len(initial_indent.group(0))
                             #Align to tab boundary
                             if initial_indent % self.tab_width >= self.tab_width / 2:
-                                initial_indent += (self.tab_width - initial_indent % self.tab_width)
+                                initial_indent = self.snap_to_next_boundary(initial_indent, self.tab_width)
                             else:
                                 initial_indent -= initial_indent % self.tab_width
                         candidate       = { "line":             line_no,
@@ -161,8 +161,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
         max_width += max_sep_width
 
         #Bump up to the next multiple of tab_width
-        max_width += (self.tab_width - max_width % self.tab_width)
-            
+        max_width = self.snap_to_next_boundary(max_width, self.tab_width)
+                    
         return max_indent, max_width
     
     @property
@@ -184,3 +184,9 @@ class AbacusCommand(sublime_plugin.TextCommand):
             encompassing it (including the newline).
         """
         return self.view.full_line(self.view.text_point(line_number, 0))
+
+    def snap_to_next_boundary(self, value, interval):
+        """
+            Alignment voodoo
+        """
+        return value + (interval - value % interval)
