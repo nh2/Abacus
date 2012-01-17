@@ -11,21 +11,21 @@ My one anal pony trick involves allowing you to slide the midline separator toke
 {
     "com.khiltd.abacus.separators": 
     [    
-        { "token": ":",     "gravity": "left"  },
-        { "token": "=",     "gravity": "right" },
-        { "token": "+=",    "gravity": "right" },
-        { "token": "-=",    "gravity": "right" },
-        { "token": "*=",    "gravity": "right" },
-        { "token": "/=",    "gravity": "right" },
-        { "token": "?=",    "gravity": "right" },
-        { "token": "||=",   "gravity": "right" },
-        { "token": "%=",    "gravity": "right" },
-        { "token": "==",    "gravity": "right" }
+        { 
+            "token":                ":",
+            "gravity":              "left",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        }
     ]
 }
 ```
 
-Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving all your CSS or JSON declarations on a single line (as I've done in the above config), then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
+Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving dozens of CSS or JSON declarations on a single line then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
 
 Usage
 ============
