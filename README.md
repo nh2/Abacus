@@ -5,7 +5,7 @@ Abacus Alignment Plugin for Sublime Text 2
 
 I'm pretty anal about aligning things in my code, but the alignment plugins I tried were more-or-less one-trick-ponies, and I didn't like any of their tricks, so I made my own.
 
-My one anal pony trick involves allowing you to slide the operator like an abacus bead, toward either the left or the right hand side by giving each possible token a `gravity` property like so:
+My one anal pony trick involves allowing you to slide the operator like an abacus bead, toward either the left or the right hand side, by giving each possible token a `gravity` property like so:
 
 ``` json
 {
