@@ -34,9 +34,16 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
         #Perform actual alignments based on gravitational affinity of separators
         for candidate in candidates:
+            indent      = 0
+            if not candidate["preserve_indent"]:
+                indent = max_indent
+            else:
+                indent = candidate["adjusted_indent"]
+
             sep_width   = len(candidate["separator"])
             right_col   = candidate["right_col"].strip()
-            left_col    = indentor.substitute(  indentation = " " * candidate["initial_indent"], 
+
+            left_col    = indentor.substitute(  indentation = " " * indent, 
                                                 left_col    = candidate["left_col"] )
             #Marry the separator to the proper column
             if candidate["gravity"] == "left":
@@ -127,7 +134,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                             "original":         line_content,
                                             "separator":        sep,
                                             "gravity":          separator["gravity"],
-                                            "initial_indent":   initial_indent,
+                                            "adjusted_indent":  initial_indent,
+                                            "preserve_indent":  separator["preserve_indentation"],
                                             "left_col":         left_col.lstrip(),
                                             "right_col":        right_col.rstrip() }
                         new_candidates.append(candidate)
@@ -147,7 +155,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         max_sep_width       = 0
 
         for candidate in candidates:
-            max_indent      = max([candidate["initial_indent"], max_indent])
+            max_indent      = max([candidate["adjusted_indent"], max_indent])
             max_sep_width   = max([len(candidate["separator"]), max_sep_width])
             max_width       = max([len(candidate["left_col"]), max_width])
         

@@ -1,15 +1,55 @@
 {
     "com.khiltd.abacus.separators": 
     [    
-        { "token": ":",     "gravity": "left"  },
-        { "token": "=",     "gravity": "right" },
-        { "token": "+=",    "gravity": "right" },
-        { "token": "-=",    "gravity": "right" },
-        { "token": "*=",    "gravity": "right" },
-        { "token": "/=",    "gravity": "right" },
-        { "token": "?=",    "gravity": "right" },
-        { "token": "||=",   "gravity": "right" },
-        { "token": "%=",    "gravity": "right" },
-        { "token": "==",    "gravity": "right" }
+        { 
+            "token":                ":",
+            "gravity":              "left",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "+=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "-=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "*=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "/=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "?=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "||=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "%=",
+            "gravity":              "right",
+            "preserve_indentation": true
+        },
+        { 
+            "token":                "==",
+            "gravity":              "right",
+            "preserve_indentation": true
+        }
     ]
 }
