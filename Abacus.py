@@ -95,8 +95,10 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 #Is it even conceivable that this line might
                 #be alignable? 
                 line_content    = self.view.substr(line)
-
-                if line_content.find(token) != -1:
+                safe_token      = re.escape(token)
+                #Look for ':' but not '::'
+                token_matcher   = r"(?<!%s)%s(?!%s)" % (safe_token, safe_token, safe_token)
+                if re.search(token_matcher, line_content):
                     #Collapse any string literals that might
                     #also contain our separator token so that
                     #we can reliably find the location of the 
