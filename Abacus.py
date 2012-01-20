@@ -91,55 +91,52 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 #Never match a line more than once
                 if len([match for match in candidates if match["line"] == line_no]):
                     continue
+ 
+                #Collapse any string literals that might
+                #also contain our separator token so that
+                #we can reliably find the location of the 
+                #real McCoy.
+                line_content        = self.view.substr(line)
+                collapsed           = line_content
 
-                #Is it even conceivable that this line might
-                #be alignable? 
-                line_content    = self.view.substr(line)
-                safe_token      = re.escape(token)
+                for match in re.finditer(r"(\"[^\"]*(?<!\\)\"|'[^']*(?<!\\)')", line_content):
+                    quoted_string   = match.group(0)
+                    collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
+                    
                 #Look for ':' but not '::'
-                token_matcher   = r"(?<!%s)%s(?!%s)" % (safe_token, safe_token, safe_token)
-                if re.search(token_matcher, line_content):
-                    #Collapse any string literals that might
-                    #also contain our separator token so that
-                    #we can reliably find the location of the 
-                    #real McCoy.
-                    collapsed           = line_content
-                    token_pos           = None
-
-                    for match in re.finditer(r"(\"[^\"]*(?<!\\)\"|'[^']*(?<!\\)')", line_content):
-                        quoted_string   = match.group(0)
-                        collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
-
+                token_pos           = None
+                safe_token          = re.escape(token)
+                token_matcher       = r"(?<!%s)%s(?!%s)" % (safe_token, safe_token, safe_token)
+                potential_matches   = [m for m in re.finditer(token_matcher, collapsed)]
+                
+                if len(potential_matches):
                     #Split on the first/last occurrence of the token
                     if separator["gravity"] == "right":
-                        partitioned = collapsed.rpartition(token)
+                        token_pos   = potential_matches[-1].start()
                     elif separator["gravity"] == "left":
-                        partitioned = collapsed.partition(token)
+                        token_pos   = potential_matches[0].start()
+                    #Now we can slice
+                    left_col        = self.detab(line_content[:token_pos]).rstrip()
+                    right_col       = self.detab(line_content[token_pos + len(token):])
+                    sep             = line_content[token_pos:token_pos + len(token)]
+                    initial_indent  = re.match("\s+", left_col) or 0
                     
-                    #Did that give us valid columns?
-                    if len(partitioned[0]) and len(partitioned[1]) and len(partitioned[2]):
-                        #Then there's our boundary line
-                        token_pos       = len(partitioned[0])
-                        left_col        = self.detab(line_content[:token_pos]).rstrip()
-                        right_col       = self.detab(line_content[token_pos + len(token):])
-                        sep             = line_content[token_pos:token_pos + len(token)]
-                        initial_indent  = re.match("\s+", left_col) or 0
-                        if initial_indent: 
-                            initial_indent = len(initial_indent.group(0))
-                            #Align to tab boundary
-                            if initial_indent % self.tab_width >= self.tab_width / 2:
-                                initial_indent = self.snap_to_next_boundary(initial_indent, self.tab_width)
-                            else:
-                                initial_indent -= initial_indent % self.tab_width
-                        candidate       = { "line":             line_no,
-                                            "original":         line_content,
-                                            "separator":        sep,
-                                            "gravity":          separator["gravity"],
-                                            "adjusted_indent":  initial_indent,
-                                            "preserve_indent":  separator["preserve_indentation"],
-                                            "left_col":         left_col.lstrip(),
-                                            "right_col":        right_col.rstrip() }
-                        new_candidates.append(candidate)
+                    if initial_indent: 
+                        initial_indent = len(initial_indent.group(0))
+                        #Align to tab boundary
+                        if initial_indent % self.tab_width >= self.tab_width / 2:
+                            initial_indent = self.snap_to_next_boundary(initial_indent, self.tab_width)
+                        else:
+                            initial_indent -= initial_indent % self.tab_width
+                    candidate       = { "line":             line_no,
+                                        "original":         line_content,
+                                        "separator":        sep,
+                                        "gravity":          separator["gravity"],
+                                        "adjusted_indent":  initial_indent,
+                                        "preserve_indent":  separator["preserve_indentation"],
+                                        "left_col":         left_col.lstrip(),
+                                        "right_col":        right_col.rstrip() }
+                    new_candidates.append(candidate)
         #Poke more stuff in the accumulator
         candidates.extend(new_candidates)
 
