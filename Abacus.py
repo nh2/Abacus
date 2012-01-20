@@ -81,12 +81,13 @@ class AbacusCommand(sublime_plugin.TextCommand):
             line in the current selection looking for it and
             add unique matches to a list.
         """
-        token                   = separator["token"]
-        selection               = self.view.sel()
-        new_candidates          = []
+        debug               = self.view.settings().get("com.khiltd.abacus.debug")
+        token               = separator["token"]
+        selection           = self.view.sel()
+        new_candidates      = []
         for region in selection:
             for line in self.view.lines(region):
-                line_no         = self.view.rowcol(line.begin())[0]
+                line_no     = self.view.rowcol(line.begin())[0]
             
                 #Never match a line more than once
                 if len([match for match in candidates if match["line"] == line_no]):
@@ -115,6 +116,13 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         token_pos   = potential_matches[-1].start()
                     elif separator["gravity"] == "left":
                         token_pos   = potential_matches[0].start()
+                        
+                    #Do you see what I see?
+                    if debug:
+                        sys.stdout.write("%s\n" % line_content)
+                        sys.stdout.write(" " * token_pos)
+                        sys.stdout.write("^\n")
+                    
                     #Now we can slice
                     left_col        = self.detab(line_content[:token_pos]).rstrip()
                     right_col       = self.detab(line_content[token_pos + len(token):])
