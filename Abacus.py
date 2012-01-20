@@ -113,9 +113,9 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 if len(potential_matches):
                     #Split on the first/last occurrence of the token
                     if separator["gravity"] == "right":
-                        token_pos   = potential_matches[-1].start()
+                        token_pos   = potential_matches.pop(-1).start()
                     elif separator["gravity"] == "left":
-                        token_pos   = potential_matches[0].start()
+                        token_pos   = potential_matches.pop(0).start()
                         
                     #Do you see what I see?
                     if debug:
@@ -124,10 +124,42 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         sys.stdout.write("^\n")
                     
                     #Now we can slice
-                    left_col        = self.detab(line_content[:token_pos]).rstrip()
+                    left_col        = self.detab(line_content[:token_pos])
                     right_col       = self.detab(line_content[token_pos + len(token):])
                     sep             = line_content[token_pos:token_pos + len(token)]
                     initial_indent  = re.match("\s+", left_col) or 0
+
+                    #Were there additional matches? Just align them
+                    #to the nearest tab stop
+                    if len(potential_matches):
+                        space_weve_added    = 0
+                        #Calculate how much blank space there is at the
+                        #beginning of the right column
+                        leading_whitespace  = re.match(r"^\s+", right_col)
+                        if leading_whitespace:
+                            leading_whitespace = len(leading_whitespace.group(0))
+                        working_left_col    = left_col
+                        working_right_col   = right_col.strip()
+
+                        for secondary_match in potential_matches:
+                            #Are there more matches in the left column?
+                            secondary_match_pos = secondary_match.start()
+                            if secondary_match_pos < len(left_col):
+                                nudge_by = self.snap_to_next_boundary(secondary_match_pos, self.tab_width) - secondary_match_pos
+                                print "Additional match in left column: %s" % secondary_match_pos
+                                print "'%s'" % working_left_col
+                                working_left_col = "'%s%s%s'" % (working_left_col[:secondary_match_pos], " " * nudge_by, working_left_col[secondary_match_pos:])
+                                print working_left_col
+                                space_weve_added += nudge_by
+                            #Or in the right?
+                            else:
+                                secondary_match_pos -= (len(left_col) + leading_whitespace + 1) - space_weve_added
+                                nudge_by = self.snap_to_next_boundary(secondary_match_pos, self.tab_width) - secondary_match_pos
+                                working_right_col = "%s%s%s" % (working_right_col[:secondary_match_pos], " " * nudge_by, working_right_col[secondary_match_pos:])
+                                space_weve_added += nudge_by
+                        
+                        left_col    = working_left_col
+                        right_col   =  working_right_col
                     
                     if initial_indent: 
                         initial_indent = len(initial_indent.group(0))
