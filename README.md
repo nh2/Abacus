@@ -34,7 +34,25 @@ Usage
 
 Make a selection, then `command + option + control + ]`.
 
+Think the plugin's crazy? Add the following to your config:
+
+```
+com.khiltd.abacus.debug: true
+```
+
+and Abacus will dump its thoughts out to Sublime Text's console like so:
+
+```
+    margin:0;
+          ^
+     padding:0;
+            ^
+    border-style:none;
+                ^
+```
+
 There's no Linux or Windows keymappings because I don't use these operating systems (at least not their GUIs) and have no idea what's appropriate for them. If you have suggestions, I'm all ears. 
+
 
 Caveats
 ============
