@@ -142,16 +142,14 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         working_right_col   = right_col.strip()
 
                         for secondary_match in potential_matches:
-                            #Are there more matches in the left column?
+                            #Are there more matches in the left column? (gravity = 'right')
                             secondary_match_pos = secondary_match.start()
                             if secondary_match_pos < len(left_col):
+                                secondary_match_pos += space_weve_added
                                 nudge_by = self.snap_to_next_boundary(secondary_match_pos, self.tab_width) - secondary_match_pos
-                                print "Additional match in left column: %s" % secondary_match_pos
-                                print "'%s'" % working_left_col
-                                working_left_col = "'%s%s%s'" % (working_left_col[:secondary_match_pos], " " * nudge_by, working_left_col[secondary_match_pos:])
-                                print working_left_col
+                                working_left_col = "%s%s%s" % (working_left_col[:secondary_match_pos], " " * nudge_by, working_left_col[secondary_match_pos:])
                                 space_weve_added += nudge_by
-                            #Or in the right?
+                            #Or in the right? (gravity = 'left')
                             else:
                                 secondary_match_pos -= (len(left_col) + leading_whitespace + 1) - space_weve_added
                                 nudge_by = self.snap_to_next_boundary(secondary_match_pos, self.tab_width) - secondary_match_pos
