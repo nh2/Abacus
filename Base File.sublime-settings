@@ -1,6 +1,6 @@
 {
     "com.khiltd.abacus.debug":      true,
-    
+
     "com.khiltd.abacus.separators": 
     [    
         { 
@@ -10,7 +10,7 @@
         },
         {
             "token":                "&",
-            "gravity":              "right",
+            "gravity":              "left",
             "preserve_indentation": false  
         },
         { 
