@@ -124,7 +124,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                         sys.stdout.write("^\n")
                     
                     #Now we can slice
-                    left_col        = self.detab(line_content[:token_pos])
+                    left_col        = self.detab(line_content[:token_pos]).rstrip()
                     right_col       = self.detab(line_content[token_pos + len(token):])
                     sep             = line_content[token_pos:token_pos + len(token)]
                     initial_indent  = re.match("\s+", left_col) or 0
