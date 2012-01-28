@@ -163,7 +163,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         for candidate in candidates:
             max_indent      = max([candidate["adjusted_indent"], max_indent])
             max_sep_width   = max([len(candidate["separator"]), max_sep_width])
-            max_width       = max([len(candidate["left_col"]), max_width])
+            max_width       = max([len(candidate["left_col"].rstrip()), max_width])
         
         max_width += max_sep_width
 
