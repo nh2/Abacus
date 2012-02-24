@@ -28,8 +28,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         
         #After accumulation is done, figure out what the minimum required
         #indentation and column width is going to have to be to make every
-        #candidate happy. Avoid selecting discontiguous regions requiring
-        #differing levels of indentation.
+        #candidate happy.
         max_indent, max_left_col_width  = self.calc_left_col_width(candidates)
 
         #Perform actual alignments based on gravitational affinity of separators
