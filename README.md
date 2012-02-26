@@ -27,7 +27,7 @@ My one anal pony trick involves allowing you to slide the operator like an abacu
 
 Abacus focuses on aligning assignments in as language-agnostic a manner as possible. It works best when there's one assignment per line; if you like shoving dozens of CSS or JSON declarations on a single line then you are an enemy of readability and this plugin will make every effort to hinder and harm your creature on Earth as far as it is able.
 
-`preserve_indentation` is a tip that you might be working in a language where whitespace is significant, thereby suggesting that Abacus should make no effort to normalize indentation across lines. It's not foolproof, especially if you set your tab width really, really low, but it tries harder than Cory Doctorow ever has.
+`preserve_indentation` is a tip that you might be working in a language where whitespace is significant, thereby suggesting that Abacus should make no effort to normalize indentation across lines. It's not foolproof, especially if you set your tab width really, really low, but it tries harder than Cory Doctorow ever has. OK, you're right... It would be impossible for anyone to try harder than that.
 
 Usage
 ============
@@ -50,9 +50,6 @@ and Abacus will dump its thoughts out to Sublime Text's console like so:
     border-style:none;
                 ^
 ```
-
-There's no Linux or Windows keymappings because I don't use these operating systems (at least not their GUIs) and have no idea what's appropriate for them. If you have suggestions, I'm all ears. 
-
 
 Caveats
 ============
