@@ -37,7 +37,7 @@ Make a selection, then `command + option + control + ]`.
 Think the plugin's crazy? Add the following to your config:
 
 ```
-com.khiltd.abacus.debug: true
+"com.khiltd.abacus.debug": true
 ```
 
 and Abacus will dump its thoughts out to Sublime Text's console like so:

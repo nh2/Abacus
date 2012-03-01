@@ -106,8 +106,12 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 #Look for ':' but not '::'
                 token_pos           = None
                 safe_token          = re.escape(token)
-                token_matcher       = r"(?<!%s)%s(?!%s)" % (safe_token, safe_token, safe_token)
-                potential_matches   = [m for m in re.finditer(token_matcher, collapsed)]
+                token_matcher       = re.compile(r"(?<![^a-zA-Z0-9 ])%s(?![^a-zA-Z0-9 ])" % (safe_token))
+                potential_matches   = [m for m in token_matcher.finditer(collapsed)]
+                
+                if debug:
+                    print token_matcher.pattern
+                    print potential_matches
                 
                 if len(potential_matches):
                     #Split on the first/last occurrence of the token
