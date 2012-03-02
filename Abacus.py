@@ -106,7 +106,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                 #Look for ':' but not '::'
                 token_pos           = None
                 safe_token          = re.escape(token)
-                token_matcher       = re.compile(r"(?<![^a-zA-Z0-9\'\" ])%s(?![^a-zA-Z0-9\'\" ])" % (safe_token))
+                token_matcher       = re.compile(r"(?<![^a-zA-Z0-9_ \0])%s(?![^a-zA-Z0-9_ \0])" % (safe_token))
                 potential_matches   = [m for m in token_matcher.finditer(collapsed)]
                 
                 if debug:
