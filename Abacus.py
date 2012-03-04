@@ -101,12 +101,14 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
                 for match in re.finditer(r"(\"[^\"]*(?<!\\)\"|'[^']*(?<!\\)')", line_content):
                     quoted_string   = match.group(0)
-                    collapsed       = collapsed.replace(quoted_string, "\0" * len(quoted_string))
+                    collapsed       = collapsed.replace(quoted_string, "\007" * len(quoted_string))
                     
-                #Look for ':' but not '::'
+                #Look for ':' but not '::', '=' but not '=>'
+                #And remember that quoted strings were collapsed
+                #up above!
                 token_pos           = None
                 safe_token          = re.escape(token)
-                token_matcher       = re.compile(r"(?<![^a-zA-Z0-9_ \0])%s(?![^a-zA-Z0-9_ \0])" % (safe_token))
+                token_matcher       = re.compile(r"(?<![^a-zA-Z0-9_ \007])%s(?![^a-zA-Z0-9_ \007])" % (safe_token))
                 potential_matches   = [m for m in token_matcher.finditer(collapsed)]
                 
                 if debug:
