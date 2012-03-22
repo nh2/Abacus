@@ -16,7 +16,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
 
         #Run through the separators accumulating alignment candidates
         #starting with the longest ones i.e. '==' before '='.
-        longest_first = sorted(separators, key=lambda sep: -len(sep["token"]))
+        longest_first = self.sort_separators(separators)
 
         #Favor those that lean right so assignments with slice notation in them
         #get handled sanely
@@ -73,6 +73,9 @@ class AbacusCommand(sublime_plugin.TextCommand):
             insertion_point     = sublime.Region(start_of_right_col, start_of_right_col)
             self.view.sel().add(insertion_point)
             #self.view.show_at_center(insertion_point)
+            
+    def sort_separators(self, separators):
+        return sorted(separators, key=lambda sep: -len(sep["token"]))
 
     def find_candidates_for_separator(self, separator, candidates):
         """
@@ -146,7 +149,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
                                         "separator":        sep,
                                         "gravity":          separator["gravity"],
                                         "adjusted_indent":  initial_indent,
-                                        "preserve_indent":  separator["preserve_indentation"],
+                                        "preserve_indent":  separator.get("preserve_indentation", False),
                                         "left_col":         left_col.lstrip(),
                                         "right_col":        right_col.rstrip() }
                     new_candidates.append(candidate)
