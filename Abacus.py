@@ -1,6 +1,9 @@
 import sublime, sublime_plugin, re, sys
 from string import Template
 
+def abacus_settings():
+    return sublime.load_settings("Abacus.sublime-settings")
+
 class AbacusCommand(sublime_plugin.TextCommand):
     """
         Main entry point. Find candidates for alignment,
@@ -9,7 +12,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
     """
     def run(self, edit):
         candidates  = []
-        separators  = self.view.settings().get("com.khiltd.abacus.separators")
+        separators  = abacus_settings().get("com.khiltd.abacus.separators")
         indentor    = Template("$indentation$left_col")
         lg_aligner  = Template("$left_col$separator")
         rg_aligner  = Template("$left_col$gutter$separator_padding$separator")
@@ -83,7 +86,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
             line in the current selection looking for it and
             add unique matches to a list.
         """
-        debug               = self.view.settings().get("com.khiltd.abacus.debug")
+        debug               = abacus_settings().get("com.khiltd.abacus.debug")
         token               = separator["token"]
         selection           = self.view.sel()
         new_candidates      = []

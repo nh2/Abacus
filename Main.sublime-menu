@@ -28,12 +28,12 @@
                         [
                             {
                                 "command":  "open_file",
-                                "args":     { "file": "${packages}/Abacus/Base File.sublime-settings" },
+                                "args":     { "file": "${packages}/Abacus/Abacus.sublime-settings" },
                                 "caption":  "Settings - Default"
                             },
                             {
                                 "command":  "open_file",
-                                "args":     { "file": "${packages}/User/Base File.sublime-settings" },
+                                "args":     { "file": "${packages}/User/Abacus.sublime-settings" },
                                 "caption":  "Settings - User"
                             },
                             {
